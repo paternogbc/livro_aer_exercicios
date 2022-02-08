@@ -1,0 +1,63 @@
+---
+title: "Exercícios: Análises Ecológicas no R"
+author: ""
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: Leonids
+    highlight: github
+    toc: yes
+---
+
+**Exercícios: Análises Ecológicas no R**
+
+Nesta página você encontrará as soluções para os exercícios propostos no livro [Análises Ecológicas no R](<https://analises-ecologicas.netlify.app/>).
+
+# Capítulo 6 - Visualização de dados
+
+## Exercício 6.1
+
+Utilizando o banco de dados `penguins` compare o comprimento do bico entre as diferentes espécies de penguins. Utilize um gráfico de caixa ([boxplot](<https://analises-ecologicas.netlify.app/cap6.html#gr%C3%A1fico-de-caixa-boxplot>)) para ilustrar a variação intraespecífica e possíveis outiers nos dados. Para melhorar o seu gráfico, lembre-se de nomear o os dois eixos corretamente, definir um tema e posicionar a legenda.
+
+### Solução
+
+```{r message=FALSE, warning=FALSE}
+
+# Carregando pacotes necesários
+library(tidyverse)
+library(ecodados)
+
+## Dados
+penguins <- palmerpenguins::penguins
+
+## Edição dos nomes das colunas para português 
+# names(penguins)
+colnames(penguins) <- c("especies", "ilha", "comprimento_bico", 
+                        "profundidade_bico", "comprimento_nadadeira", 
+                        "massa_corporal", "sexo", "ano")
+
+# Gráfico: Boxplot do tamanho do bico entre as diferentes espécies
+ggplot(penguins, aes(y = comprimento_bico, x = especies, fill = especies)) +
+  geom_boxplot() +
+  theme_bw(base_size = 16) +
+  theme(
+    legend.position = "top"
+  ) +
+  labs(fill = "Espécies",
+       x = "Espécies", y = "Comprimento do bico (mm)")
+```
+
+## Exercício 6.2
+
+Utilizando o banco de dados `penguins` faça um [histograma](<https://analises-ecologicas.netlify.app/cap6.html#histograma-histogram>) com a distribuição da massa corporal para cada uma das espécies. Utilize uma cor de preenchimento para cada espécie.
+
+### Solução 
+
+```{r}
+ggplot(penguins, aes(x = massa_corporal, fill = especies)) +
+  geom_histogram(alpha = .5,  position = position_dodge()) +
+  theme_bw(base_size = 16) +
+  labs(x = "Massa corporal (g)",
+       y = "Frequência",
+       fill = "Espécie")
+```
